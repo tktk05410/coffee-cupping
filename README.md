@@ -25,7 +25,7 @@
 
 ## 作者备注
 
-作者 童艺坤 · <https://github.com/tktk05410/coffee-cupping>
+作者 tktk05410 · <https://github.com/tktk05410/coffee-cupping>
 
 ## 许可
 
