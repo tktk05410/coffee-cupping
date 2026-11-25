@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -579,6 +579,26 @@ section[id]{scroll-margin-top:112px}
   .bub{min-width:30px;height:32px;font-size:12.5px;padding:0 2px}
   .afffinal{justify-self:end}
   .afffinal i{display:inline;margin:0 0 0 8px;letter-spacing:.2em}
+  /* 触控目标：小胶囊与最终分输入盒放大一档，便于手指点按 */
+  .chip{padding:7px 13px;font-size:12.5px}
+  .finalin{width:46px;height:32px}
+  /* 对比表改成「每个样品一段标签—数值」的竖排，手机不用横向滑动 */
+  .compare{display:block;width:100%}
+  .compare thead{display:none}
+  .compare tbody{display:block}
+  .compare tr{
+    display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;
+    padding:10px 12px;border:1px solid var(--line2);border-radius:9px;margin:0 0 8px;
+  }
+  .compare tr.act{border-color:var(--line)}
+  .compare td{
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+    border:none;padding:2px 0;font-size:12.5px;text-align:right;
+  }
+  .compare td::before{content:attr(data-label);color:var(--ink3);font-size:11.5px;text-align:left}
+  .compare td:first-child{grid-column:1/-1;justify-content:flex-start;font-weight:600;font-size:13px;padding-bottom:5px}
+  .compare td:first-child::before{display:none}
+  .compare td.score{grid-column:1/-1;border-top:1px solid var(--line2);margin-top:5px;padding-top:7px;font-weight:700}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important}
@@ -1405,11 +1425,11 @@ function summaryHTML(){
     const fin = sm.affectiveFinal || {};
     const showVal = k => (fin[k] !== null && fin[k] !== undefined) ? `${fin[k]}<small class="finmark">·终</small>` : (sm.affective[k] ?? "—");
     return `<tr class="${i===store.active?"act":""}">
-      <td>${sm.letter}${sm.code ? " · " + esc(sm.code) : ""}</td>
-      ${AFFECTIVE_KEYS.map(k=>`<td>${showVal(k)}</td>`).join("")}
-      <td>${rr.rated ? rr.sum : "—"}</td>
-      <td>${rr.u}</td><td>${rr.d}</td>
-      <td class="score">${rr.rated ? (rr.complete ? "" : "≈") + fmtScore(rr.score) : "—"}</td>
+      <td data-label="样品">${sm.letter}${sm.code ? " · " + esc(sm.code) : ""}</td>
+      ${AFFECTIVE_SECTIONS.map(x=>`<td data-label="${esc(x.name)}">${showVal(x.key)}</td>`).join("")}
+      <td data-label="Σh">${rr.rated ? rr.sum : "—"}</td>
+      <td data-label="u 不一致杯">${rr.u}</td><td data-label="d 瑕疵杯">${rr.d}</td>
+      <td class="score" data-label="总分">${rr.rated ? (rr.complete ? "" : "≈") + fmtScore(rr.score) : "—"}</td>
     </tr>`;
   }).join("");
   return `<div class="sumgrid">
